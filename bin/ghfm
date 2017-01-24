@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+# Renders GitHub-flavored Markdown to HTML.
+#
+# USAGE
+#     ghfm [<file>...]
+#
+# DESCRIPTION
+#     Concatenates <file>s together and renders GitHub-flavored
+#     Markdown to stdout. If <file> is unspecified, reads from
+#     stdin.
+#
+# GEM DEPENDENCIES
+#     github-markdown
+
+require 'github/markdown'
+
+print GitHub::Markdown.render(ARGF.read)

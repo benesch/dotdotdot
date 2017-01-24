@@ -1,0 +1,181 @@
+#!/usr/bin/env bash
+
+# Color scheme: https://github.com/benesch/osx-terminal.app-colors-solarized
+pushd "$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")/.." && pwd)" > /dev/null
+
+source "lib/utils.bash"
+
+
+# ==> Standard environment variables.
+
+# Path.
+have_command yarn && prepend_to_path "$(yarn global bin)"
+have_command composer && prepend_to_path ~/.composer/vendor/bin
+have_command cargo && prepend_to_path ~/.cargo/bin
+prepend_to_path "/usr/local/sbin"
+prepend_to_path "$(pwd)/bin"
+
+# Default shell.
+export SHELL="$BASH"
+
+# Default editor, respected by Git, etc.
+export EDITOR=vim
+
+# Default pager.
+export PAGER=less
+
+# Make less work better.
+export LESS="--ignore-case --chop-long-lines --RAW-CONTROL-CHARS"
+
+# Enable default `ls` colors.
+export CLICOLOR=1
+
+# libedit sucks, so use readline instead.
+export LDFLAGS="-L /usr/local/opt/readline/lib"
+export CPPFLAGS="-I /usr/local/opt/readline/include"
+
+# El Capitan removed OpenSSL headers.
+export OPENSSL_INCLUDE_DIR="$(brew --prefix openssl)/include"
+export OPENSSL_LIB_DIR="$(brew --prefix openssl)/lib"
+
+# ==> Programming languages and development environments.
+# PS124.
+export PS124_VM_NFS=1
+
+# rbenv, the Ruby version manager.
+export RBENV_ROOT="/usr/local/var/rbenv"
+have_command rbenv && eval "$(rbenv init -)"
+
+# OPAM, the OCaml package manager.
+[[ -f ~/.opam/opam-init/init.sh ]] && source ~/.opam/opam-init/init.sh
+
+# virtualenv, the Python version manager.
+# Keep all virtualenvs in one place.
+export WORKON_HOME="/usr/local/virtualenvs/"
+[[ -f /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
+
+# Go.
+export GOPATH=~/go
+
+# GPG.
+gpg-agent &> /dev/null || gpg-agent --daemon --write-env-file ~/.gpg-agent-info &> /dev/null
+source ~/.gpg-agent-info
+export GPG_AGENT_INFO
+export GPG_TTY=$(tty)
+
+# SSH.
+# As of macOS Sierra, SSH key passphrases are no longer auto-loaded
+# from the OS X keychain. Convice SSH to load them anyway.
+ssh-add -A 2> /dev/null
+
+# ==> Shell magic.
+
+# Color scheme reflection.
+# We want Vim's color scheme to match Terminal's, so use an AppleScript hack
+# to store the color scheme in an env var. This assumes that the tab running
+# this script has focus, which is generally true.
+export COLOR_SCHEME="$(osascript -e 'tell application "Terminal" to get the name of the current settings of selected tab of the front window')"
+
+# Shell history enhancement.
+shopt -s histverify
+shopt -s histappend
+
+# Enable Ctrl-o
+# See: http://apple.stackexchange.com/questions/3253/ctrl-o-behavior-in-terminal-app
+stty discard undef
+
+# Enable Ctrl-s for reverse reverse-i-search
+# See: http://stackoverflow.com/questions/549810/cygwin-control-r-reverse-i-search-in-bash-how-do-you-reset-the-search
+stty stop undef
+
+# Bump allowed number of open file descriptors; Mac OS sets the default
+# too low.
+ulimit -n 40960 40960
+
+# Tab completion, courtesy of Homebrew.
+source "$(brew --prefix)/etc/bash_completion"
+
+
+# ==> Aliases
+
+# Shadow ls to enable colorized output.
+ls() {
+  gls --color=auto --literal -v "$@"
+}
+
+# Shadow man to hack in colors to less.
+man() {
+  env \
+    LESS_TERMCAP_md=$'\e[31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[37m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[04;33m' \
+    man "$@"
+}
+
+alias git=hub
+
+
+# ==> Prompt
+
+__pwd_changed() {
+  [[ "$__LAST_CHECKED_PWD" == "$PWD" ]] && return 1
+  __LAST_CHECKED_PWD="$PWD"
+}
+
+# __generate_prompt
+#
+# Called by Bash to generate a prompt after each command
+__generate_prompt() {
+  # Undocumented function that updates OS X Terminal's knowledge of the current
+  # working directory. Required for Cmd + T to open a new tab in the same
+  # directory.
+  #
+  # See '/etc/bashrc' on an OS X box for details.
+  update_terminal_cwd
+
+  # Configure Git prompt.
+  local GIT_PS1_SHOWCOLORHINTS=1
+  local GIT_PS1_SHOWDIRTYSTATE=1
+  local GIT_PS1_SHOWSTASHSTATE=1
+  local GIT_PS1_SHOWUNTRACKEDFILES=1
+  local GIT_PS1_SHOWUPSTREAM="auto verbose"
+
+  # Display Python virtual environment when active.
+  if [[ "${VIRTUAL_ENV}" ]]; then
+    local PS1_VENV="$(color -p "({purple}$(basename "${VIRTUAL_ENV}"){clear})") "
+  fi
+
+  # Colorize pre/post Git status strings..
+  # Set `$PS1_HOOK` to add additional text to the prompt.
+  local PS1_PRE="$(color -p "\n[{bold}{purple}\w{clear}] ${PS1_VENV}${PS1_HOOK}")"
+  local PS1_POST="$(color -p "\n{cyan}\u{clear}@{bold}\h{clear}$ ")"
+
+  if __pwd_changed; then
+    [[ "$(gstat --file-system --format=%T .)" == osxfusefs ]]
+    __PWD_IS_REMOTE=$?
+  fi
+
+  if [[ "$__PWD_IS_REMOTE" -eq 0 ]]; then
+    PS1="${PS1_PRE}(remote fs)${PS1_POST}"
+    return
+  fi
+
+  # Temporarily disable alias expansion.
+  # When 'git' is aliased as 'hub', the overhead of launching Ruby several
+  # times to fetch repository status makes the prompt unbearably slow.
+  shopt -u expand_aliases
+
+  __git_ps1 "${PS1_PRE}" "${PS1_POST}"
+
+  # ==> Re-enable alias expansion
+  shopt -s expand_aliases
+}
+
+source /usr/local/etc/bash_completion.d/git-prompt.sh
+
+PROMPT_COMMAND=__generate_prompt
+
+popd > /dev/null

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -o errexit -o xtrace
+
+rm -f LHD1.img
+disk161 create LHD1.img 12M
+hostbin/host-poisondisk LHD1.img
+hostbin/host-mksfs LHD1.img vol
+hostbin/host-sfsck LHD1.img

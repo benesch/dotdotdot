@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sshfs cs161:cs161 ~/Sites/cs161 \
+  -o workaround=rename \
+  -o allow_other \
+  -o umask=022

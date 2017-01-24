@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+DOTDOTDOT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$DOTDOTDOT_ROOT/lib/dotdotdot.bash"
+dotdotdot_install

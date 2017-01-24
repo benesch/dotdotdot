@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#
+# Launches git-daemon to serve up local Git repositories
+#
+# USAGE
+#     git-serve-sites [<directory>]
+#
+# If <directory> is unspecified, defaults to ~/Sites.
+#
+# CLIENT USAGE
+#     git clone git://$(hostname)/path/to/repo
+#
+# WARNING
+#     Not for production use. Only over secure networks.
+#
+# NOTES
+#     In its default configuration, git-daemon requires that each
+#     repository enable git daemon exporting via the creation of
+#     a git-daemon-export-ok magic file in the .git directory.
+#
+#     This script sets `--export-all` to not require the presence of
+#     this file, intentionally sacrificing security for convenience.
+
+base_path=${1-~/Sites}
+
+git daemon \
+  --base-path=${base_path} \
+  --export-all \
+  --reuseaddr \
+  --verbose

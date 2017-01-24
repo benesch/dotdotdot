@@ -1,0 +1,29 @@
+[user]
+	name = Nikhil Benesch
+	email = nikhil.benesch@gmail.com
+[color]
+	ui = true
+[push]
+	default = current
+[rerere]
+	enabled = true
+[rebase]
+	autosquash = true
+[tar "tar.xz"]
+	command = xz -c
+[branch]
+	autosetuprebase = always
+[hub]
+	protocol = ssh
+[credential]
+	helper = osxkeychain
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[commit]
+	gpgsign = true
+[alias]
+	co = checkout
+	c = checkout -
+	rc = rebase --continue

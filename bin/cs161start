@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+sys161 kernel-ASST4 "mount sfs lhd1:; cd lhd1:; s"

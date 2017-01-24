@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sshfs turtlebot:zach-nikhil-cs189r-assts ~/Sites/cs189r-remote

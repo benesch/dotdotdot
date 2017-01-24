@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+format="%Y-%m-%dT%H:%M:%SZ"
+
+if [[ "$1" == "--short" ]]; then
+  format="%Y%m%d%H%M%S"
+fi
+
+date -u +"${format}"

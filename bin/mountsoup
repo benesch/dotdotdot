@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+sshfs firefly:soup ~/Sites/remote-soup \
+  -o workaround=rename \
+  -o auto_cache \
+  -o allow_other \
+  -o reconnect \
+  -o umask=022 \
+  -o idmap=user

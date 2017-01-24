@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+./configure --ostree=$(pwd -P)/../root/$(basename "$PWD")
+cd kern/conf
+./config $1
+cd ../..
+cd kern/compile/$1
+bmake clean && bmake depend && bmake && bmake install

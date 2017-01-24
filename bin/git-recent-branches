@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+git for-each-ref \
+  --sort=-committerdate refs/heads/ \
+  --format='%(committerdate:relative)	%(authorname)	%(refname:short)' \
+  | column -t -s'	'

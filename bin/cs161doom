@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+cs161newdisk
+sys161 -D "$1" kernel-ASST4 "mount sfs lhd1:; cd lhd1:;"
+sys161 kernel-ASST4 "mount sfs lhd1:; q"
+hostbin/host-sfsck LHD1.img

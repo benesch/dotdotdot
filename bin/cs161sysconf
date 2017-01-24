@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+find .. -type d -depth 1 ! \( -path "../$(basename $PWD)" \) -exec cp sys161.conf {} \;
+find .. -type d -depth 1 -exec rm {}/LHD0.img \;

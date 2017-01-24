@@ -1,0 +1,9 @@
+tap "homebrew/services"
+
+brew "ag"
+brew "bash"
+brew "bash-completion"
+brew "coreutils"
+brew "git"
+brew "gpg"
+brew "hub"
