@@ -8,3 +8,6 @@ brew "git"
 brew "gpg"
 brew "hub"
 brew "rlwrap"
+
+cask "vagrant"
+cask "virtualbox"
