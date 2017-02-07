@@ -8,6 +8,7 @@ brew "git"
 brew "gpg"
 brew "hub"
 brew "rlwrap"
+brew "wget"
 
 cask "slack"
 cask "vagrant"
