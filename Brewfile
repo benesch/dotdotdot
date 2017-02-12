@@ -10,6 +10,7 @@ brew "hub"
 brew "rlwrap"
 brew "wget"
 
+cask "fing"
 cask "slack"
 cask "vagrant"
 cask "virtualbox"
