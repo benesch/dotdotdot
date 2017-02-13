@@ -69,6 +69,12 @@ dotdotdot_install() {
   defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
   defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
+  # Update the max file limits.
+  echo kern.maxfiles=65536 | sudo tee -a /etc/sysctl.conf
+  echo kern.maxfilesperproc=65536 | sudo tee -a /etc/sysctl.conf
+  sudo sysctl -w kern.maxfiles=65536
+  sudo sysctl -w kern.maxfilesperproc=65536
+
 
   # ==> Install pending macOS updates.
   headline "Updating macOS"
