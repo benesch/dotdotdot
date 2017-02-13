@@ -10,6 +10,7 @@ brew "hub"
 brew "rlwrap"
 brew "wget"
 
+cask "amethyst"
 cask "fing"
 cask "slack"
 cask "sublime-text"
