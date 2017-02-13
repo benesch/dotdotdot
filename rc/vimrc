@@ -1,0 +1,105 @@
+syntax on
+
+set autoindent
+set autoread
+set backspace=2
+set clipboard=unnamed
+set colorcolumn=81,101
+set cursorline
+set dir=~/.vim/swap//
+set expandtab
+set foldlevelstart=99
+set gdefault
+set guifont=Monaco:h12
+set guioptions-=l
+set guioptions-=r
+set guioptions-=m
+set hidden
+set hlsearch
+set ignorecase
+set incsearch
+set nocompatible
+set number
+set relativenumber
+set ruler
+set scrolloff=3
+set shiftwidth=2
+set showcmd
+set showmatch
+set smartcase
+set softtabstop=2
+set tabstop=2
+set undofile
+set undodir=~/.vim/undo//
+set updatetime=250
+set visualbell
+set wildmenu
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-fugitive'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'tpope/vim-rails.git'
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'Shutnik/jshint2.vim'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'kien/ctrlp.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'JazzCore/ctrlp-cmatcher'
+Bundle 'ntpeters/vim-better-whitespace'
+Bundle 'hdima/python-syntax'
+Bundle 'qpkorr/vim-bufkill'
+Bundle 'editorconfig/editorconfig-vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'file:///Users/benesch/src/pyxl', {'rtp': 'vim/'}
+"Bundle 'davidhalter/jedi-vim'
+"Bundle 'powerman/vim-plugin-autosess'
+"Bundle 'klen/python-mode'
+
+call vundle#end()
+
+filetype off
+filetype on
+filetype plugin on
+filetype indent on
+
+colorscheme solarized
+if !has('gui_running') && $COLOR_SCHEME =~ 'dark'
+  set background=dark
+else
+  set background=light
+endif
+
+let g:BufKillCreateMappings = 0
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_lazy_update = 175
+let g:ctrlp_match_func = {'match': 'matcher#cmatch'}
+let g:ctrlp_max_files = 0
+let g:ctrlp_user_command = 'cd %s && git ls-files --cached --others --exclude-standard || find . -type f'
+let g:jedi#popup_on_dot = 0
+let g:jedi#use_splits_not_buffers = 'winwidth'
+let g:netrw_bufsettings = 'nomodifiable nomodified nobuflisted nowrap ro'
+let g:vundle_default_git_proto = 'git'
+let g:pymode_breakpoint = 0
+let g:pymode_indent = 1
+let g:pymode_motion = 1
+let g:pymode_lint = 0
+let g:pymode_rope = 0
+let g:pymode_options_colorcolumn = 0
+let python_highlight_all = 1
+let g:python_host_prog='/usr/local/bin/python'
+let mapleader = ","
+nnoremap <leader><space> :noh<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>j :bn<cr>
+nnoremap <leader>k :bp<cr>
+
+if has('nvim')
+  tnoremap <C-w> <C-\><C-n><C-w>
+endif
