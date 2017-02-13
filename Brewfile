@@ -9,5 +9,6 @@ brew "gpg"
 brew "hub"
 brew "rlwrap"
 
+cask "slack"
 cask "vagrant"
 cask "virtualbox"
