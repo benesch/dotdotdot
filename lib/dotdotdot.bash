@@ -20,14 +20,16 @@ depend() {
 }
 
 dotdotdot_install() {
+  shopt -s globstar
+
   # ==> Load helpers.
-  source "$DOTDOTDOT_ROOT/lib/utils.bash"
+  source "lib/utils.bash"
 
   # ==> Link dotfiles.
   headline "Linking dotfiles"
-  for rc in "$DOTDOTDOT_ROOT"/rc/*
+  for rc in rc/**/*
   do
-    ln -sf "$rc" "$HOME/.$(basename "$rc")"
+    ln -sf "$PWD/$rc" "$HOME/.$(cut -f2- -d/ <<< "$rc")"
   done
 
   # ==> Maybe install Homebrew.
@@ -41,7 +43,7 @@ dotdotdot_install() {
 
   # ==> Update Homebrew bundle.
   headline "Updating Homebrew bundle"
-  brew bundle --file="$DOTDOTDOT_ROOT/Brewfile"
+  brew bundle
 
   # ==> Set macOS defaults.
   # These were lifted from @holman. Thanks, @holman!
