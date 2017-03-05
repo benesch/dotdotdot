@@ -125,6 +125,14 @@ __pwd_changed() {
   __LAST_CHECKED_PWD="$PWD"
 }
 
+__reload_env() {
+  mkdir -p ~/.env.d
+  for var in ~/.env.d/*
+  do
+    [[ -f "$var" ]] && export "$(basename "$var")"="$(<"$var")"
+  done
+}
+
 # __generate_prompt
 #
 # Called by Bash to generate a prompt after each command
@@ -135,6 +143,8 @@ __generate_prompt() {
   #
   # See '/etc/bashrc' on an OS X box for details.
   update_terminal_cwd
+
+  __reload_env
 
   # Configure Git prompt.
   local GIT_PS1_SHOWCOLORHINTS=1

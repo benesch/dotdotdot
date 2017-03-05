@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+command="$1"
+
+if [[ "$command" = on ]]
+then
+  networksetup -setsocksfirewallproxystate Wi-Fi on
+  state="$(networksetup -getsocksfirewallproxy Wi-Fi)"
+  server="$(echo "$state" | grep "Server:" | cut -f2 -d" ")"
+  port="$(echo "$state" | grep "Port:" | cut -f2 -d" ")"
+  echo "socks5://$server:$port" > ~/.env.d/http_proxy
+  echo "socks5://$server:$port" > ~/.env.d/https_proxy
+elif [[ "$command" = off ]]
+then
+  networksetup -setsocksfirewallproxystate Wi-Fi off
+  > ~/.env.d/http_proxy
+  > ~/.env.d/https_proxy
+elif [[ "$command" = set ]]
+then
+  shift
+  networksetup -setsocksfirewallproxy Wi-Fi "$@"
+elif [[ "$command" = "" || "$command" = status ]]
+then
+  networksetup -getsocksfirewallproxy Wi-Fi
+else
+  echo "socks: unrecognized command '$command'
+
+valid incantations:
+  socks [status]
+  socks set DOMAIN PORT REQUIRES-AUTH USER PASS
+  socks on
+  socks off" >&2
+fi
