@@ -14,6 +14,11 @@ have_command composer && prepend_to_path ~/.composer/vendor/bin
 have_command cargo && prepend_to_path ~/.cargo/bin
 prepend_to_path "/usr/local/sbin"
 prepend_to_path "$(pwd)/bin"
+mkdir -p ~/.path.d
+for p in ~/.path.d/*
+do
+  [[ -f "$p" ]] && append_to_path "$(<"$p")"
+done
 
 # Default shell.
 export SHELL="$BASH"

@@ -5,6 +5,13 @@ prepend_to_path() {
   PATH="$1:$PATH"
 }
 
+# append_to_path NEW-PATH
+#
+# Adds NEW-PATH to the end of the $PATH environment variable.
+append_to_path() {
+  PATH="$PATH:$1"
+}
+
 # have_command COMMAND
 #
 # Exits successfully if COMMAND exists on the PATH; exits unsucessfully
