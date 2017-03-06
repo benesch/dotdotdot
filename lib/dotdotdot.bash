@@ -29,7 +29,9 @@ dotdotdot_install() {
   headline "Linking dotfiles"
   for rc in rc/**/*
   do
-    ln -sf "$PWD/$rc" "$HOME/.$(cut -f2- -d/ <<< "$rc")"
+    target="$HOME/.$(cut -f2- -d/ <<< "$rc")"
+    mkdir -p "$(dirname "$target")"
+    [[ -f "$rc" ]] && ln -sf "$PWD/$rc" "$target"
   done
 
   # ==> Maybe install Homebrew.
