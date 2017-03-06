@@ -56,6 +56,7 @@ export WORKON_HOME="/usr/local/virtualenvs/"
 
 # Go.
 export GOPATH=~/go
+have_command go && prepend_to_path "$GOPATH/bin"
 
 # GPG.
 gpg-agent &> /dev/null || gpg-agent --daemon --write-env-file ~/.gpg-agent-info &> /dev/null
