@@ -1,4 +1,5 @@
 tap "homebrew/services"
+tap "caskroom/drivers"
 
 brew "ag"
 brew "bash"
@@ -14,6 +15,7 @@ cask "amethyst"
 cask "docker"
 cask "fing"
 cask "google-chrome"
+cask "microsoft-intellitype"
 cask "slack"
 cask "spotify"
 cask "sublime-text"
