@@ -145,7 +145,7 @@ __generate_prompt() {
   # directory.
   #
   # See '/etc/bashrc' on an OS X box for details.
-  update_terminal_cwd
+  have_command update_terminal_cwd && update_terminal_cwd
 
   __reload_env
 
