@@ -117,7 +117,9 @@ man() {
 }
 
 alias git=hub
-
+c() {
+  cd ~/go/src/github.com/cockroachdb/cockroach
+}
 
 # ==> Prompt
 
