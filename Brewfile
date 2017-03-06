@@ -11,6 +11,7 @@ brew "rlwrap"
 brew "wget"
 
 cask "amethyst"
+cask "docker"
 cask "fing"
 cask "slack"
 cask "sublime-text"
