@@ -12,6 +12,7 @@ source "lib/utils.bash"
 have_command yarn && prepend_to_path "$(yarn global bin)"
 have_command composer && prepend_to_path ~/.composer/vendor/bin
 have_command cargo && prepend_to_path ~/.cargo/bin
+have_command ccache && prepend_to_path /usr/local/opt/ccache/libexec
 prepend_to_path "/usr/local/sbin"
 prepend_to_path "$(pwd)/bin"
 mkdir -p ~/.path.d
