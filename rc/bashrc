@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[[ "$PS1" ]] || return
+
 # Color scheme: https://github.com/benesch/osx-terminal.app-colors-solarized
 pushd "$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")/.." && pwd)" > /dev/null
 
@@ -10,16 +12,15 @@ source "lib/utils.bash"
 
 # Path.
 have_command yarn && prepend_to_path "$(yarn global bin)"
-have_command composer && prepend_to_path ~/.composer/vendor/bin
-have_command cargo && prepend_to_path ~/.cargo/bin
-have_command ccache && prepend_to_path /usr/local/opt/ccache/libexec
+prepend_to_path /usr/local/texlive/2017/bin/x86_64-darwin
+prepend_to_path /usr/local/opt/git/share/git-core/contrib/diff-highlight
+prepend_to_path ~/.composer/vendor/bin
+prepend_to_path /usr/local/opt/ruby/bin
+prepend_to_path ~/.cargo/bin
+prepend_to_path ~/go/bin
+prepend_to_path /usr/local/opt/ccache/libexec
 prepend_to_path "/usr/local/sbin"
 prepend_to_path "$(pwd)/bin"
-mkdir -p ~/.path.d
-for p in ~/.path.d/*
-do
-  [[ -f "$p" ]] && append_to_path "$(<"$p")"
-done
 
 # Default shell.
 export SHELL="$BASH"
@@ -37,8 +38,8 @@ export LESS="--ignore-case --chop-long-lines --RAW-CONTROL-CHARS"
 export CLICOLOR=1
 
 # libedit sucks, so use readline instead.
-export LDFLAGS="-L /usr/local/opt/readline/lib"
-export CPPFLAGS="-I /usr/local/opt/readline/include"
+export LDFLAGS="-L/usr/local/opt/readline/lib"
+export CPPFLAGS="-I/usr/local/opt/readline/include"
 
 # El Capitan removed OpenSSL headers.
 export OPENSSL_INCLUDE_DIR="$(brew --prefix openssl)/include"
@@ -64,16 +65,20 @@ export WORKON_HOME="/usr/local/virtualenvs/"
 export GOPATH=~/go
 have_command go && prepend_to_path "$GOPATH/bin"
 
-# GPG.
-gpg-agent &> /dev/null || gpg-agent --daemon --write-env-file ~/.gpg-agent-info &> /dev/null
-source ~/.gpg-agent-info
-export GPG_AGENT_INFO
-export GPG_TTY=$(tty)
-
 # SSH.
 # As of macOS Sierra, SSH key passphrases are no longer auto-loaded
 # from the OS X keychain. Convice SSH to load them anyway.
 ssh-add -A 2> /dev/null
+
+# AsciiDoc.
+export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
+
+# Load one-off environment variables from ~/.env.d.
+mkdir -p ~/.env.d
+[[ ! -f ~/.env.d/secrets ]] && touch ~/.env.d/secrets
+for f in ~/.env.d/*; do
+  source "$f"
+done
 
 # ==> Shell magic.
 
@@ -97,7 +102,7 @@ stty stop undef
 
 # Bump allowed number of open file descriptors; Mac OS sets the default
 # too low.
-ulimit -n 40960 40960
+ulimit -n 65536 65536
 
 # Tab completion, courtesy of Homebrew.
 source "$(brew --prefix)/etc/bash_completion"
@@ -191,6 +196,8 @@ __generate_prompt() {
 
   # ==> Re-enable alias expansion
   shopt -s expand_aliases
+
+  history -a
 }
 
 source /usr/local/etc/bash_completion.d/git-prompt.sh

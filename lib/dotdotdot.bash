@@ -79,6 +79,18 @@ dotdotdot_install() {
   sudo sysctl -w kern.maxfiles=65536
   sudo sysctl -w kern.maxfilesperproc=65536
 
+  # TODO: figure out how to automatically remap caps lock to esc.
+  # https://apple.stackexchange.com/questions/13598/updating-modifier-key-mappings-through-defaults-command-tool/88096#88096
+
+  # Enable subpixel antialiasing so that non-4K external displays don't
+  # look atrocious.
+  defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO
+
+  headline "Installing macOS Terminal color schemes"
+  plutil -replace "Window Settings.Solarized Light" -xml "$(<misc/termcolor/solarized-light.xml)" ~/Library/Preferences/com.apple.Terminal.plist
+  plutil -replace "Window Settings.Solarized Dark" -xml "$(<misc/termcolor/solarized-dark.xml)" ~/Library/Preferences/com.apple.Terminal.plist
+  defaults write com.apple.Terminal "Default Window Settings" -string "Solarized Dark"
+  defaults write com.apple.Terminal "Startup Window Settings" -string "Solarized Dark"
 
   # ==> Install pending macOS updates.
   headline "Updating macOS"

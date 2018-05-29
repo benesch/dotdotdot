@@ -1,0 +1,15 @@
+The XML files in this directory are fragments of property list ("plist")
+documents that represent macOS Terminal.app color schemes. They were extracted
+from a property list file for a Terminal.app that had been configured through
+the GUI on macOS Mojave using a command like the following
+
+    $ plutil -extract "Window Settings.Solarized-VARIANT" xml1 -o - ~/Library/Preferences/com.apple.Terminal.plist
+
+and then modified to remove the XML header, leaving just the naked <dict>
+element.
+
+See the dotdotdot installation script for an example of how to install these
+plists automatically.
+
+Kudos to Jemar Jones for inventing this solution and publicizing it on
+StackExchange: https://apple.stackexchange.com/a/344464.

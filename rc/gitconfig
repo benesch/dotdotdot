@@ -9,6 +9,7 @@
 	enabled = true
 [rebase]
 	autosquash = true
+	autostash = true
 [tar "tar.xz"]
 	command = xz -c
 [branch]
@@ -18,12 +19,26 @@
 [credential]
 	helper = osxkeychain
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 	required = true
+	process = git-lfs filter-process
 [commit]
 	gpgsign = true
+  verbose = true
 [alias]
 	co = checkout
 	c = checkout -
 	rc = rebase --continue
+	f = fetch --all
+[interactive]
+	difffilter = diff-highlight
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = nikhil.benesch@gmail.com
+	smtpServerPort = 587
+[diff]
+	algorithm = patience
+[http]
+	cookiefile = /Users/benesch/.gitcookies

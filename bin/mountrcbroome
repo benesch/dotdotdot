@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sshfs broome.cluster.recurse.com:dev ~/Sites/rcbroome \
+  -o workaround=rename \
+  -o allow_other \
+  -o umask=022
