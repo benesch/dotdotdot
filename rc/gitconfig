@@ -25,7 +25,7 @@
 	process = git-lfs filter-process
 [commit]
 	gpgsign = true
-  verbose = true
+  	verbose = true
 [alias]
 	co = checkout
 	c = checkout -
