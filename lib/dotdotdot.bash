@@ -20,14 +20,12 @@ depend() {
 }
 
 dotdotdot_install() {
-  shopt -s globstar
-
   # ==> Load helpers.
   source "lib/utils.bash"
 
   # ==> Link dotfiles.
   headline "Linking dotfiles"
-  for rc in rc/**/*
+  for rc in $(find rc -type f)
   do
     target="$HOME/.$(cut -f2- -d/ <<< "$rc")"
     mkdir -p "$(dirname "$target")"
