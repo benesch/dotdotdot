@@ -80,6 +80,9 @@ dotdotdot_install() {
   # TODO: figure out how to automatically remap caps lock to esc.
   # https://apple.stackexchange.com/questions/13598/updating-modifier-key-mappings-through-defaults-command-tool/88096#88096
 
+  # Allow tabbing between all UI elements.
+  defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
   # Enable subpixel antialiasing so that non-4K external displays don't
   # look atrocious.
   defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO
