@@ -67,11 +67,9 @@ have_command go && prepend_to_path "$GOPATH/bin"
 
 # SSH.
 # As of macOS Sierra, SSH key passphrases are no longer auto-loaded
-# from the macOS keychain. Convice SSH to load them anyway.
-ssh-add -A 2> /dev/null
-# Add identities that do *not* have passphrases stored in the macOS keychain,
-# too. This requires a separate ssh-add invocation.
-ssh-add 2> /dev/null
+# from the macOS keychain. Convice SSH to load them anyway. If that
+# fails, try adding keys without keychain passcodes.
+ssh-add -A 2> /dev/null || ssh-add 2> /dev/null
 
 # AsciiDoc.
 export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
