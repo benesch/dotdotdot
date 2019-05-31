@@ -56,10 +56,6 @@ Bundle 'hdima/python-syntax'
 Bundle 'qpkorr/vim-bufkill'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'kchmck/vim-coffee-script'
-Bundle 'file:///Users/benesch/src/pyxl', {'rtp': 'vim/'}
-"Bundle 'davidhalter/jedi-vim'
-"Bundle 'powerman/vim-plugin-autosess'
-"Bundle 'klen/python-mode'
 
 call vundle#end()
 
@@ -68,7 +64,7 @@ filetype on
 filetype plugin on
 filetype indent on
 
-colorscheme solarized
+silent! colorscheme solarized
 if !has('gui_running') && $COLOR_SCHEME =~ 'dark'
   set background=dark
 else

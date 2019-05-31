@@ -73,6 +73,11 @@ ssh-add -A 2> /dev/null
 # AsciiDoc.
 export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
 
+# GPG.
+# Apparently this is important. I'm not sure why, but `git commit` fails
+# to sign commits without it.
+GPG_TTY=$(tty)
+
 # Load one-off environment variables from ~/.env.d.
 mkdir -p ~/.env.d
 [[ ! -f ~/.env.d/secrets ]] && touch ~/.env.d/secrets

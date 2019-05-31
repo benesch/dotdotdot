@@ -72,7 +72,8 @@ dotdotdot_install() {
   defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
   # Update the max file limits.
-  echo kern.maxfiles=65536 | sudo tee -a /etc/sysctl.conf
+  grep -q kern.maxfiles= /etc/sysctl.conf || echo kern.maxfiles=65536 | sudo tee -a /etc/sysctl.conf
+  grep -q kern.maxfilesperproc= /etc/sysctl.conf || echo kern.maxfiles=65536 | sudo tee -a /etc/sysctl.conf
   echo kern.maxfilesperproc=65536 | sudo tee -a /etc/sysctl.conf
   sudo sysctl -w kern.maxfiles=65536
   sudo sysctl -w kern.maxfilesperproc=65536
@@ -92,6 +93,12 @@ dotdotdot_install() {
   plutil -replace "Window Settings.Solarized Dark" -xml "$(<misc/termcolor/solarized-dark.xml)" ~/Library/Preferences/com.apple.Terminal.plist
   defaults write com.apple.Terminal "Default Window Settings" -string "Solarized Dark"
   defaults write com.apple.Terminal "Startup Window Settings" -string "Solarized Dark"
+
+  # ==> Install Vim plugins.
+  headline "Installing Vim plugins"
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  vim +PluginInstall +qall
+  mkdir -p ~/.vim/swap
 
   # ==> Install pending macOS updates.
   headline "Updating macOS"
