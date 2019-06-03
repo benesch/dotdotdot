@@ -91,6 +91,9 @@ dotdotdot_install() {
   # Increase mouse tracking speed to maximum.
   defaults write -g com.apple.mouse.scaling 3
 
+  # Automatically hide the dock.
+  defaults write -g com.apple.dock.autohide 1
+
   headline "Installing macOS Terminal color schemes"
   plutil -replace "Window Settings.Solarized Light" -xml "$(<misc/termcolor/solarized-light.xml)" ~/Library/Preferences/com.apple.Terminal.plist
   plutil -replace "Window Settings.Solarized Dark" -xml "$(<misc/termcolor/solarized-dark.xml)" ~/Library/Preferences/com.apple.Terminal.plist
