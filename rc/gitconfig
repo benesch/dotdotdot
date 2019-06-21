@@ -44,3 +44,5 @@
 	cookiefile = /Users/benesch/.gitcookies
 [pull]
 	rebase = true
+[include]
+  path = .config/git/secrets
