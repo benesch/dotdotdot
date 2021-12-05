@@ -2,7 +2,6 @@
 
 [[ "$PS1" ]] || return
 
-# Color scheme: https://github.com/benesch/osx-terminal.app-colors-solarized
 pushd "$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")/.." && pwd)" > /dev/null
 
 source "lib/utils.bash"
@@ -10,17 +9,17 @@ source "lib/utils.bash"
 
 # ==> Standard environment variables.
 
+eval $(/opt/homebrew/bin/brew shellenv)
+
 # Path.
-have_command yarn && prepend_to_path "$(yarn global bin)"
-prepend_to_path /usr/local/texlive/2017/bin/x86_64-darwin
-prepend_to_path /usr/local/opt/git/share/git-core/contrib/diff-highlight
 prepend_to_path ~/.composer/vendor/bin
-prepend_to_path /usr/local/opt/ruby/bin
 prepend_to_path ~/.cargo/bin
 prepend_to_path ~/go/bin
-prepend_to_path /usr/local/opt/ccache/libexec
-prepend_to_path "/usr/local/sbin"
-prepend_to_path "$(pwd)/bin"
+have_command yarn && prepend_to_path "$(yarn global bin)"
+prepend_to_path "$HOMEBREW_PREFIX"/opt/git/share/git-core/contrib/diff-highlight
+prepend_to_path "$HOMEBREW_PREFIX"/opt/ruby/bin
+prepend_to_path "$HOMEBREW_PREFIX"/opt/ccache/libexec
+prepend_to_path "$HOMEBREW_PREFIX"/sbin
 
 # Default shell.
 export SHELL="$BASH"
@@ -37,29 +36,20 @@ export LESS="--ignore-case --chop-long-lines --RAW-CONTROL-CHARS"
 # Enable default `ls` colors.
 export CLICOLOR=1
 
-# libedit sucks, so use readline instead.
-export LDFLAGS="-L/usr/local/opt/readline/lib"
-export CPPFLAGS="-I/usr/local/opt/readline/include"
-
 # El Capitan removed OpenSSL headers.
-export OPENSSL_INCLUDE_DIR="$(brew --prefix openssl)/include"
-export OPENSSL_LIB_DIR="$(brew --prefix openssl)/lib"
+export OPENSSL_INCLUDE_DIR="$HOMEBREW_PREFIX/include"
+export OPENSSL_LIB_DIR="$HOMEBREW_PREFIX/lib"
 
 # ==> Programming languages and development environments.
 # PS124.
 export PS124_VM_NFS=1
 
 # rbenv, the Ruby version manager.
-export RBENV_ROOT="/usr/local/var/rbenv"
+export RBENV_ROOT="$HOMEBREW_PREFIX/var/rbenv"
 have_command rbenv && eval "$(rbenv init -)"
 
 # OPAM, the OCaml package manager.
 [[ -f ~/.opam/opam-init/init.sh ]] && source ~/.opam/opam-init/init.sh
-
-# virtualenv, the Python version manager.
-# Keep all virtualenvs in one place.
-export WORKON_HOME="/usr/local/virtualenvs/"
-[[ -f /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
 
 # Go.
 export GOPATH=~/go
@@ -72,7 +62,7 @@ have_command go && prepend_to_path "$GOPATH/bin"
 ssh-add -A 2> /dev/null || ssh-add 2> /dev/null
 
 # AsciiDoc.
-export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
+export XML_CATALOG_FILES=$HOMEBREW_PREFIX/etc/xml/catalog
 
 # GPG.
 # Apparently this is important. I'm not sure why, but `git commit` fails
@@ -111,7 +101,7 @@ stty stop undef
 ulimit -n 65536 65536
 
 # Tab completion, courtesy of Homebrew.
-source "$(brew --prefix)/etc/bash_completion"
+source "$HOMEBREW_PREFIX/etc/bash_completion"
 
 
 # ==> Aliases
@@ -134,9 +124,6 @@ man() {
 }
 
 alias git=hub
-c() {
-  cd ~/go/src/github.com/cockroachdb/cockroach
-}
 
 # ==> Prompt
 
@@ -206,7 +193,7 @@ __generate_prompt() {
   history -a
 }
 
-source /usr/local/etc/bash_completion.d/git-prompt.sh
+source $HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh
 
 PROMPT_COMMAND=__generate_prompt
 

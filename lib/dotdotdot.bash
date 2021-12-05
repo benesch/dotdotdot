@@ -36,9 +36,7 @@ dotdotdot_install() {
   if ! have_command brew
   then
     headline "Installing Homebrew"
-    yes | /usr/bin/ruby -e "$(curl \
-      --fail --silent --show-error --location \
-      https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
   # ==> Update Homebrew bundle.
