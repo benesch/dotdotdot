@@ -37,8 +37,9 @@ export LESS="--ignore-case --chop-long-lines --RAW-CONTROL-CHARS"
 export CLICOLOR=1
 
 # El Capitan removed OpenSSL headers.
-export OPENSSL_INCLUDE_DIR="$HOMEBREW_PREFIX/include"
-export OPENSSL_LIB_DIR="$HOMEBREW_PREFIX/lib"
+export OPENSSL_DIR=$(brew --prefix openssl)
+export OPENSSL_INCLUDE_DIR="$OPENSSL_DIR/include"
+export OPENSSL_LIB_DIR="$OPENSSL_DIR/lib"
 
 # ==> Programming languages and development environments.
 # PS124.
