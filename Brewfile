@@ -9,6 +9,7 @@ brew "git"
 brew "gpg"
 brew "hub"
 brew "rlwrap"
+brew "rustup"
 brew "wget"
 
 cask "1password"
