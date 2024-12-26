@@ -14,6 +14,7 @@ brew "wget"
 
 cask "1password"
 cask "amethyst"
+cask "discord"
 cask "docker"
 cask "dropbox"
 cask "font-microsoft-office"
