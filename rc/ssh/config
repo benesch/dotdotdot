@@ -1,1 +1,3 @@
+Include %d/.colima/ssh_config
+
 Include *.config
