@@ -19,6 +19,7 @@ prepend_to_path ~/go/bin
 have_command yarn && prepend_to_path "$(yarn global bin)"
 prepend_to_path "$HOMEBREW_PREFIX"/opt/git/share/git-core/contrib/diff-highlight
 prepend_to_path "$HOMEBREW_PREFIX"/opt/ruby/bin
+prepend_to_path "$(gem environment gemdir)/bin"
 prepend_to_path "$HOMEBREW_PREFIX"/opt/ccache/libexec
 prepend_to_path "$HOMEBREW_PREFIX"/opt/rustup/bin
 prepend_to_path "$HOMEBREW_PREFIX"/sbin
