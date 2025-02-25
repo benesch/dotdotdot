@@ -3,7 +3,6 @@ syntax on
 set autoindent
 set autoread
 set backspace=2
-set clipboard=unnamed
 set colorcolumn=81,101
 set cursorline
 set dir=~/.vim/swap//
